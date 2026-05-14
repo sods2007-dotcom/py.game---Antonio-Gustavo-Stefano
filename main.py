@@ -168,3 +168,124 @@ def main():
 # Executa o jogo
 if __name__ == "__main__":
     main()
+
+# Importa pygame
+import pygame
+
+# Importa configurações do jogo
+from settings import (
+    WIDTH,
+    HEIGHT,
+    FPS,
+    TITLE,
+    GREEN,
+    DARK_GREEN,
+    WHITE,
+    GRAY,
+    GOAL_X,
+    GOAL_Y,
+    GOAL_WIDTH,
+    GOAL_HEIGHT,
+)
+
+# Importa sprites
+from sprites import Ball
+
+
+# Função responsável por desenhar o campo
+def draw_field(screen):
+
+    screen.fill(GREEN)
+
+    pygame.draw.rect(
+        screen,
+        DARK_GREEN,
+        (0, 0, WIDTH, HEIGHT // 2),
+    )
+
+    pygame.draw.rect(
+        screen,
+        WHITE,
+        (GOAL_X, GOAL_Y, GOAL_WIDTH, GOAL_HEIGHT),
+        5,
+    )
+
+    pygame.draw.line(
+        screen,
+        GRAY,
+        (GOAL_X, GOAL_Y + GOAL_HEIGHT),
+        (GOAL_X + GOAL_WIDTH, GOAL_Y + GOAL_HEIGHT),
+        6,
+    )
+
+    pygame.draw.rect(
+        screen,
+        WHITE,
+        (WIDTH // 2 - 250, GOAL_Y + GOAL_HEIGHT, 500, 210),
+        3,
+    )
+
+    pygame.draw.arc(
+        screen,
+        WHITE,
+        (WIDTH // 2 - 90, GOAL_Y + GOAL_HEIGHT + 150, 180, 110),
+        3.14,
+        6.28,
+        3,
+    )
+
+    pygame.draw.circle(
+        screen,
+        WHITE,
+        (WIDTH // 2, HEIGHT - 150),
+        6,
+    )
+
+
+# Função principal
+def main():
+
+    pygame.init()
+
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+    pygame.display.set_caption(TITLE)
+
+    clock = pygame.time.Clock()
+
+    running = True
+
+    # Grupo de sprites
+    all_sprites = pygame.sprite.Group()
+
+    # Cria bola
+    ball = Ball()
+
+    # Adiciona bola no grupo
+    all_sprites.add(ball)
+
+    while running:
+
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Atualiza sprites
+        all_sprites.update()
+
+        # Desenha campo
+        draw_field(screen)
+
+        # Desenha sprites
+        all_sprites.draw(screen)
+
+        pygame.display.flip()
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
